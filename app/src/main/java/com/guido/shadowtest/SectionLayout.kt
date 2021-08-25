@@ -17,10 +17,10 @@ import androidx.core.content.ContextCompat
 class SectionLayout : ConstraintLayout {
 
     companion object {
-        private const val backgroundColor = R.color.white
-        private const val cornerRadius = R.dimen.section_radius_corner
-        private const val shadowColor =  R.color.shadowColor
-        private const val sectionElevation = R.dimen.section_elevation
+        private const val CORNER_RADIUS = R.dimen.section_radius_corner
+        private const val SHADOW_BLUR = 10f
+        private const val SHADOW_COLOR =  R.color.shadowColor
+        private const val BACKGROUND_COLOR = R.color.white
     }
 
     constructor(context: Context): super(context) {
@@ -40,58 +40,14 @@ class SectionLayout : ConstraintLayout {
     }
 
     private fun initBackground() {
-        background = generateBackgroundWithShadow(this)
+        val sectionDrawable = SectionDrawable.builder()
+            .beginConfig()
+            .setRoundCorner(context.resources.getDimension(CORNER_RADIUS))
+            .setShadowBlur(SHADOW_BLUR)
+            .setShadowColor(ContextCompat.getColor(context, SHADOW_COLOR))
+            .setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_COLOR))
+            .endConfig()
+            .build()
+        background = sectionDrawable.getDrawable()
     }
-
-    private fun setBackgroundColor() {
-
-    }
-
-    private fun setRoundCorner() {
-
-    }
-
-    private fun setShadowColor() {
-
-    }
-
-    private fun setElevation() {
-
-    }
-
-    private fun generateBackgroundWithShadow(view: View): Drawable {
-        val cornerRadiusValue: Float = view.context.resources.getDimension(cornerRadius)
-        val elevationValue = view.context.resources.getDimension(sectionElevation).toInt()
-        val shadowColorValue = ContextCompat.getColor(view.context, shadowColor)
-        val backgroundColorValue = ContextCompat.getColor(view.context, backgroundColor)
-        val backgroundPaint = Paint()
-        val dy = elevationValue / 3
-        val shapeDrawable = ShapeDrawable()
-        val shapeDrawablePadding = Rect()
-        val outerRadius = floatArrayOf(
-            cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue,
-            cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue
-        )
-
-        shapeDrawablePadding.top = elevationValue
-        shapeDrawablePadding.bottom = elevationValue
-        backgroundPaint.style = Paint.Style.FILL
-        backgroundPaint.setShadowLayer(cornerRadiusValue, 0f, 0f, 0)
-        shapeDrawable.setPadding(shapeDrawablePadding)
-        shapeDrawable.paint.color = backgroundColorValue
-        shapeDrawable.paint.setShadowLayer(10f, 0f, dy.toFloat(), shadowColorValue)
-        view.setLayerType(LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
-        shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
-
-        val drawable = LayerDrawable(arrayOf<Drawable>(shapeDrawable))
-        drawable.setLayerInset(
-            0,
-            elevationValue,
-            elevationValue * 2,
-            elevationValue,
-            elevationValue * 2
-        )
-        return drawable
-    }
-
 }

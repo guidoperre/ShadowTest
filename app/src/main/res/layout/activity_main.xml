@@ -8,7 +8,7 @@
 
     <com.guido.shadowtest.SectionLayout
         android:id="@+id/sectionLayout"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="200dp"
         app:layout_constraintBottom_toTopOf="@+id/cardView"
         app:layout_constraintLeft_toLeftOf="parent"
