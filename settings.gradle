@@ -1,0 +1,2 @@
+rootProject.name = "ShadowTest"
+include ':app'
