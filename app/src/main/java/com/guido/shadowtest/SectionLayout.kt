@@ -12,13 +12,13 @@ import android.view.Gravity
 import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import androidx.core.view.setPadding
 
 
 class SectionLayout : ConstraintLayout {
 
     companion object {
         private const val CORNER_RADIUS = R.dimen.section_radius_corner
-        private const val SHADOW_BLUR = 10f
         private const val SHADOW_COLOR =  R.color.shadowColor
         private const val BACKGROUND_COLOR = R.color.white
     }
@@ -31,11 +31,11 @@ class SectionLayout : ConstraintLayout {
         initBackground()
     }
 
-    constructor(
-        context: Context,
-        attrs: AttributeSet,
-        defStyleAttr: Int
-    ): super(context, attrs, defStyleAttr) {
+    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int): super(
+        context,
+        attrs,
+        defStyleAttr
+    ) {
         initBackground()
     }
 
@@ -43,11 +43,15 @@ class SectionLayout : ConstraintLayout {
         val sectionDrawable = SectionDrawable.builder()
             .beginConfig()
             .setRoundCorner(context.resources.getDimension(CORNER_RADIUS))
-            .setShadowBlur(SHADOW_BLUR)
             .setShadowColor(ContextCompat.getColor(context, SHADOW_COLOR))
             .setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_COLOR))
             .endConfig()
             .build()
+        setFitPadding(sectionDrawable.getElevation())
         background = sectionDrawable.getDrawable()
+    }
+
+    private fun setFitPadding(size: Int) {
+        setPadding(size, size, size, size * 2)
     }
 }

@@ -9,6 +9,13 @@ import android.graphics.drawable.shapes.RoundRectShape
 class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
     companion object {
+        private const val ELEVATION = 10
+        private const val SHADOW_BLUR = 10f
+        private const val DEFAULT_CORNER_RADIUS = 10f
+        private const val ZERO = 0
+        private const val ZERO_FLOAT = 0f
+        private const val TWO = 2
+
         /**
          * Builds the shape.
          *
@@ -19,9 +26,9 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
         }
     }
 
-    private var elevation = builder.elevation
+    private var elevation = ELEVATION
     private var roundCorner = builder.roundCorner
-    private var shadowBlur = builder.shadowBlur
+    private var shadowBlur = SHADOW_BLUR
     private var shadowColor  = builder.shadowColor
     private var backgroundColor = builder.backgroundColor
 
@@ -29,7 +36,7 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
         super.draw(canvas)
         setPadding(getVerticalPadding())
         paint.color = backgroundColor
-        paint.setShadowLayer(shadowBlur, 0f, (elevation / 3).toFloat(), shadowColor)
+        paint.setShadowLayer(shadowBlur, ZERO_FLOAT, (elevation / TWO).toFloat(), shadowColor)
         shape = RoundRectShape(getRoundCorner(), null, null)
 
     }
@@ -40,14 +47,14 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
     fun getDrawable(): Drawable {
         val drawable = LayerDrawable(arrayOf<Drawable>(this))
-        drawable.setLayerInset(0, elevation, elevation * 2, elevation, elevation * 2)
+        drawable.setLayerInset(ZERO, elevation + TWO, elevation, elevation + TWO, elevation * TWO)
         return drawable
     }
 
     private fun getRoundCorner(): FloatArray {
         val backgroundPaint = Paint()
         backgroundPaint.style = Paint.Style.FILL
-        backgroundPaint.setShadowLayer(roundCorner, 0f, 0f, 0)
+        backgroundPaint.setShadowLayer(roundCorner, ZERO_FLOAT, ZERO_FLOAT, ZERO)
         return floatArrayOf(
             roundCorner, roundCorner, roundCorner, roundCorner,
             roundCorner, roundCorner, roundCorner, roundCorner
@@ -57,17 +64,17 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
     private fun getVerticalPadding(): Rect {
         val rect = Rect()
         rect.top = elevation
-        rect.bottom = elevation
+        rect.bottom = elevation * TWO
+        rect.left = elevation
+        rect.right = elevation
         return rect
     }
 
     class Builder : ConfigBuilder, ShapeBuilder {
 
-        var elevation: Int = 10
-        var roundCorner: Float = 10f
-        var shadowBlur: Float = 10f
-        var shadowColor: Int = 0
-        var backgroundColor: Int = 0
+        var roundCorner: Float = DEFAULT_CORNER_RADIUS
+        var shadowColor: Int = ZERO
+        var backgroundColor: Int = ZERO
 
         override fun beginConfig(): ConfigBuilder {
             return this
@@ -75,11 +82,6 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
         override fun setRoundCorner(corner: Float): ConfigBuilder {
             this.roundCorner = corner
-            return this
-        }
-
-        override fun setShadowBlur(blur: Float): ConfigBuilder {
-            this.shadowBlur = blur
             return this
         }
 
@@ -110,14 +112,6 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
          * @return IConfigBuilder
          */
         fun setRoundCorner(corner: Float): ConfigBuilder
-
-        /**
-         * Sets shadow blur
-         *
-         * @param blur the blur size
-         * @return IConfigBuilder
-         */
-        fun setShadowBlur(blur: Float): ConfigBuilder
 
         /**
          * Sets shadow color.
