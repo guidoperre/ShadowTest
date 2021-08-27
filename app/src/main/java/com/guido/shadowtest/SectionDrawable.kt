@@ -12,11 +12,11 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
     companion object {
         const val ELEVATION = 10
-        private const val SHADOW_BLUR = 10f
+        private const val SHADOW_BLUR = 20f
         private const val DEFAULT_CORNER_RADIUS = 10f
         private const val ZERO = 0
         private const val ZERO_FLOAT = 0f
-        private const val TWO = 2
+        private const val TWO_FLOAT = 2f
 
         /**
          * Builds the shape.
@@ -28,23 +28,25 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
         }
     }
 
-    private var elevation = ELEVATION
     private var roundCorner = builder.roundCorner
-    private var shadowBlur = SHADOW_BLUR
     private var shadowColor  = builder.shadowColor
     private var backgroundColor = builder.backgroundColor
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
         paint.color = backgroundColor
-        paint.setShadowLayer(shadowBlur, ZERO_FLOAT, (elevation / TWO).toFloat(), shadowColor)
+        paint.setShadowLayer(SHADOW_BLUR, ZERO_FLOAT, (ELEVATION / TWO_FLOAT), shadowColor)
         shape = RoundRectShape(getRoundCorner(), null, null)
     }
 
     fun getDrawable(): Drawable {
-        val drawable = LayerDrawable(arrayOf<Drawable>(this))
-        drawable.setLayerInset(ZERO, elevation + TWO, elevation, elevation + TWO, elevation * TWO)
-        return drawable
+        return if (Build.VERSION.SDK_INT > 27) {
+            LayerDrawable(arrayOf<Drawable>(this))
+        } else {
+            val drawable = LayerDrawable(arrayOf<Drawable>(this))
+            drawable.setLayerInset(ZERO, 10, 10, 10, 20)
+            drawable
+        }
     }
 
     private fun getRoundCorner(): FloatArray {
