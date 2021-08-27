@@ -5,6 +5,8 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RoundRectShape
+import android.os.Build
+import androidx.annotation.RequiresApi
 
 class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
@@ -34,11 +36,9 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
     override fun draw(canvas: Canvas) {
         super.draw(canvas)
-        setPadding(getVerticalPadding())
         paint.color = backgroundColor
         paint.setShadowLayer(shadowBlur, ZERO_FLOAT, (elevation / TWO).toFloat(), shadowColor)
         shape = RoundRectShape(getRoundCorner(), null, null)
-
     }
 
     fun getDrawable(): Drawable {
@@ -55,15 +55,6 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
             roundCorner, roundCorner, roundCorner, roundCorner,
             roundCorner, roundCorner, roundCorner, roundCorner
         )
-    }
-
-    private fun getVerticalPadding(): Rect {
-        val rect = Rect()
-        rect.top = elevation
-        rect.bottom = elevation * TWO
-        rect.left = elevation
-        rect.right = elevation
-        return rect
     }
 
     class Builder : ConfigBuilder, ShapeBuilder {
