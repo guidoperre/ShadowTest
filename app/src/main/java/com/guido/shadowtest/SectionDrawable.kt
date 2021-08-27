@@ -9,7 +9,7 @@ import android.graphics.drawable.shapes.RoundRectShape
 class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
     companion object {
-        private const val ELEVATION = 10
+        const val ELEVATION = 10
         private const val SHADOW_BLUR = 10f
         private const val DEFAULT_CORNER_RADIUS = 10f
         private const val ZERO = 0
@@ -39,10 +39,6 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
         paint.setShadowLayer(shadowBlur, ZERO_FLOAT, (elevation / TWO).toFloat(), shadowColor)
         shape = RoundRectShape(getRoundCorner(), null, null)
 
-    }
-
-    fun getElevation(): Int {
-        return elevation
     }
 
     fun getDrawable(): Drawable {

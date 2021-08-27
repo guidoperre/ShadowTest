@@ -1,19 +1,9 @@
 package com.guido.shadowtest
 
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RoundRectShape
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
-import androidx.core.view.setPadding
-
 
 class SectionLayout : ConstraintLayout {
 
@@ -21,14 +11,16 @@ class SectionLayout : ConstraintLayout {
         private const val CORNER_RADIUS = R.dimen.section_radius_corner
         private const val SHADOW_COLOR =  R.color.shadowColor
         private const val BACKGROUND_COLOR = R.color.white
+
+        private const val ZERO = 0
     }
 
     constructor(context: Context): super(context) {
-        initBackground()
+        init()
     }
 
     constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
-        initBackground()
+        init()
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int): super(
@@ -36,10 +28,10 @@ class SectionLayout : ConstraintLayout {
         attrs,
         defStyleAttr
     ) {
-        initBackground()
+        init()
     }
 
-    private fun initBackground() {
+    private fun init() {
         val sectionDrawable = SectionDrawable.builder()
             .beginConfig()
             .setRoundCorner(context.resources.getDimension(CORNER_RADIUS))
@@ -47,11 +39,16 @@ class SectionLayout : ConstraintLayout {
             .setBackgroundColor(ContextCompat.getColor(context, BACKGROUND_COLOR))
             .endConfig()
             .build()
-        setFitPadding(sectionDrawable.getElevation())
+        setPadding(ZERO, ZERO, ZERO, ZERO)
         background = sectionDrawable.getDrawable()
     }
 
-    private fun setFitPadding(size: Int) {
-        setPadding(size, size, size, size * 2)
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        super.setPadding(
+            left + SectionDrawable.ELEVATION,
+            top + SectionDrawable.ELEVATION,
+            right + SectionDrawable.ELEVATION,
+            bottom + SectionDrawable.ELEVATION * 2
+        )
     }
 }
