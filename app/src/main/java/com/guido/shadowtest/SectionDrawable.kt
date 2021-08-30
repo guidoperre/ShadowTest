@@ -12,7 +12,7 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
 
     companion object {
         const val ELEVATION = 10
-        private const val SHADOW_BLUR = 20f
+        private const val SHADOW_BLUR = 10f
         private const val DEFAULT_CORNER_RADIUS = 10f
         private const val ZERO = 0
         private const val ZERO_FLOAT = 0f
@@ -40,13 +40,7 @@ class SectionDrawable(builder: Builder) : ShapeDrawable() {
     }
 
     fun getDrawable(): Drawable {
-        return if (Build.VERSION.SDK_INT > 27) {
-            LayerDrawable(arrayOf<Drawable>(this))
-        } else {
-            val drawable = LayerDrawable(arrayOf<Drawable>(this))
-            drawable.setLayerInset(ZERO, 10, 10, 10, 20)
-            drawable
-        }
+        return LayerDrawable(arrayOf<Drawable>(this))
     }
 
     private fun getRoundCorner(): FloatArray {
