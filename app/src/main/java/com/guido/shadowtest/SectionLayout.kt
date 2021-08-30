@@ -40,56 +40,37 @@ class SectionLayout : ConstraintLayout {
     }
 
     private fun initBackground() {
-        background = generateBackgroundWithShadow(this)
+        val shapeDrawable = generateBackgroundWithShadow(this)
+        val drawable = toDrawable(shapeDrawable)
+        setLayerType(LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
+        background = drawable
     }
 
-    private fun setBackgroundColor() {
-
-    }
-
-    private fun setRoundCorner() {
-
-    }
-
-    private fun setShadowColor() {
-
-    }
-
-    private fun setElevation() {
-
-    }
-
-    private fun generateBackgroundWithShadow(view: View): Drawable {
+    private fun generateBackgroundWithShadow(view: View): ShapeDrawable {
         val cornerRadiusValue: Float = view.context.resources.getDimension(cornerRadius)
-        val elevationValue = view.context.resources.getDimension(sectionElevation).toInt()
         val shadowColorValue = ContextCompat.getColor(view.context, shadowColor)
         val backgroundColorValue = ContextCompat.getColor(view.context, backgroundColor)
-        val backgroundPaint = Paint()
-        val dy = elevationValue / 3
         val shapeDrawable = ShapeDrawable()
-        val shapeDrawablePadding = Rect()
         val outerRadius = floatArrayOf(
             cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue,
             cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue
         )
 
-        shapeDrawablePadding.top = elevationValue
-        shapeDrawablePadding.bottom = elevationValue
-        backgroundPaint.style = Paint.Style.FILL
-        backgroundPaint.setShadowLayer(cornerRadiusValue, 0f, 0f, 0)
-        shapeDrawable.setPadding(shapeDrawablePadding)
         shapeDrawable.paint.color = backgroundColorValue
-        shapeDrawable.paint.setShadowLayer(10f, 0f, dy.toFloat(), shadowColorValue)
-        view.setLayerType(LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
+        shapeDrawable.paint.setShadowLayer(10f, 0f, 5f, shadowColorValue)
         shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
 
+        return shapeDrawable
+    }
+
+    private fun toDrawable(shapeDrawable: ShapeDrawable): Drawable {
         val drawable = LayerDrawable(arrayOf<Drawable>(shapeDrawable))
         drawable.setLayerInset(
             0,
-            elevationValue,
-            elevationValue * 2,
-            elevationValue,
-            elevationValue * 2
+            10,
+            10,
+            10,
+            20
         )
         return drawable
     }
