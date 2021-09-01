@@ -1,27 +1,40 @@
 package com.guido.shadowtest
 
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RoundRectShape
+import android.graphics.Canvas
+import android.graphics.Path
+import android.graphics.RectF
 import android.util.AttributeSet
-import android.view.Gravity
-import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
 
 class SectionLayout : ConstraintLayout {
 
-    companion object {
-        private const val backgroundColor = R.color.white
-        private const val cornerRadius = R.dimen.section_radius_corner
-        private const val shadowColor =  R.color.shadowColor
-        private const val sectionElevation = R.dimen.section_elevation
-    }
+    private val layoutRect = RectF()
+    private val path = Path()
+
+    private val cornerRadius = resources.getDimension(
+        R.dimen.wallet_api_section_layout_corner_radius
+    )
+    private val horPad = resources.getDimension(
+        R.dimen.wallet_api_section_layout_offset_left_right
+    )
+    private val topPad = resources.getDimension(
+        R.dimen.wallet_api_section_layout_offset_top
+    )
+    private val botPad = resources.getDimension(
+        R.dimen.wallet_api_section_layout_offset_bottom
+    )
+    private val horGap = resources.getDimension(
+        R.dimen.wallet_api_section_layout_offset_left_right_gap
+    )
+    private val topGap = resources.getDimension(
+        R.dimen.wallet_api_section_layout_offset_top_gap
+    )
+    private val botGap = resources.getDimension(
+        R.dimen.wallet_api_section_layout_offset_bottom_gap
+    )
 
     constructor(context: Context): super(context) {
         initBackground()
@@ -40,59 +53,42 @@ class SectionLayout : ConstraintLayout {
     }
 
     private fun initBackground() {
-        val drawable = ContextCompat.getDrawable(context, R.drawable.shadow)
+        val drawable = ContextCompat.getDrawable(context, R.drawable.wallet_api_sections_bg)
         background = drawable
     }
 
-    private fun setBackgroundColor() {
-
+    override fun draw(canvas: Canvas?) {
+        canvas?.translate(0f, topPad)
+        super.draw(canvas)
     }
 
-    private fun setRoundCorner() {
-
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        setBackgroundScale(w, h)
+        setViewGroupBounds(w, h)
     }
 
-    private fun setShadowColor() {
-
+    private fun setBackgroundScale(w: Int, h: Int) {
+        val heightRatio = (botPad + topPad) / h
+        val widthRatio = (horPad * 2 + w) / w
+        scaleY = heightRatio
+        scaleX = widthRatio
     }
 
-    private fun setElevation() {
-
+    private fun setViewGroupBounds(w: Int, h: Int) {
+        path.reset()
+        layoutRect.top = resources.getDimension(R.dimen.wallet_api_section_layout_offset_top_gap)
+        layoutRect.left = resources.getDimension(R.dimen.wallet_api_section_layout_offset_left_right_gap)
+        layoutRect.right = w - resources.getDimension(R.dimen.wallet_api_section_layout_offset_left_right_gap)
+        layoutRect.bottom = h - resources.getDimension(R.dimen.wallet_api_section_layout_offset_bottom_gap)
+        path.addRoundRect(layoutRect, cornerRadius, cornerRadius, Path.Direction.CW)
+        path.close()
     }
 
-    private fun generateBackgroundWithShadow(view: View): Drawable {
-        val cornerRadiusValue: Float = view.context.resources.getDimension(cornerRadius)
-        val elevationValue = view.context.resources.getDimension(sectionElevation).toInt()
-        val shadowColorValue = ContextCompat.getColor(view.context, shadowColor)
-        val backgroundColorValue = ContextCompat.getColor(view.context, backgroundColor)
-        val backgroundPaint = Paint()
-        val dy = elevationValue / 3
-        val shapeDrawable = ShapeDrawable()
-        val shapeDrawablePadding = Rect()
-        val outerRadius = floatArrayOf(
-            cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue,
-            cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue
-        )
-
-        shapeDrawablePadding.top = elevationValue
-        shapeDrawablePadding.bottom = elevationValue
-        backgroundPaint.style = Paint.Style.FILL
-        backgroundPaint.setShadowLayer(cornerRadiusValue, 0f, 0f, 0)
-        shapeDrawable.setPadding(shapeDrawablePadding)
-        shapeDrawable.paint.color = backgroundColorValue
-        shapeDrawable.paint.setShadowLayer(10f, 0f, dy.toFloat(), shadowColorValue)
-        view.setLayerType(LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
-        shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
-
-        val drawable = LayerDrawable(arrayOf<Drawable>(shapeDrawable))
-        drawable.setLayerInset(
-            0,
-            elevationValue,
-            elevationValue * 2,
-            elevationValue,
-            elevationValue * 2
-        )
-        return drawable
+    override fun dispatchDraw(canvas: Canvas) {
+        val save = canvas.save()
+        canvas.clipPath(path)
+        super.dispatchDraw(canvas)
+        canvas.restoreToCount(save)
     }
-
 }
