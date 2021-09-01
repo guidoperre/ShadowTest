@@ -11,6 +11,11 @@ import androidx.core.content.ContextCompat
 
 class SectionLayout : ConstraintLayout {
 
+    companion object {
+        private const val TWO = 2
+        private const val ZERO_FLOAT = 0f
+    }
+
     private val layoutRect = RectF()
     private val path = Path()
 
@@ -57,8 +62,23 @@ class SectionLayout : ConstraintLayout {
         background = drawable
     }
 
+    private fun setBackgroundScale(w: Int, h: Int) {
+        scaleX = ((horPad * TWO) + w) / w
+        scaleY = (botPad + topPad + h) / h
+    }
+
+    private fun setViewGroupBounds(w: Int, h: Int) {
+        path.reset()
+        layoutRect.top = topGap
+        layoutRect.left = horGap
+        layoutRect.right = w - horGap
+        layoutRect.bottom = h - botGap
+        path.addRoundRect(layoutRect, cornerRadius, cornerRadius, Path.Direction.CW)
+        path.close()
+    }
+
     override fun draw(canvas: Canvas?) {
-        canvas?.translate(0f, resources.getDimension(R.dimen.wallet_api_section_layout_offset_top))
+        canvas?.translate(ZERO_FLOAT, topPad)
         super.draw(canvas)
     }
 
@@ -66,25 +86,6 @@ class SectionLayout : ConstraintLayout {
         super.onSizeChanged(w, h, oldw, oldh)
         setBackgroundScale(w, h)
         setViewGroupBounds(w, h)
-    }
-
-    private fun setBackgroundScale(w: Int, h: Int) {
-        val heightGap = resources.getDimension(R.dimen.wallet_api_section_layout_offset_bottom) + resources.getDimension(R.dimen.wallet_api_section_layout_offset_top) + h
-        val widthGap = (resources.getDimension(R.dimen.wallet_api_section_layout_offset_left_right) * 2) + w
-        val widthRatio = widthGap / w
-        val heightRatio = heightGap / h
-        scaleX = widthRatio
-        scaleY = heightRatio
-    }
-
-    private fun setViewGroupBounds(w: Int, h: Int) {
-        path.reset()
-        layoutRect.top = resources.getDimension(R.dimen.wallet_api_section_layout_offset_top_gap)
-        layoutRect.left = resources.getDimension(R.dimen.wallet_api_section_layout_offset_left_right_gap)
-        layoutRect.right = w - resources.getDimension(R.dimen.wallet_api_section_layout_offset_left_right_gap)
-        layoutRect.bottom = h - resources.getDimension(R.dimen.wallet_api_section_layout_offset_bottom_gap)
-        path.addRoundRect(layoutRect, cornerRadius, cornerRadius, Path.Direction.CW)
-        path.close()
     }
 
     override fun dispatchDraw(canvas: Canvas) {
