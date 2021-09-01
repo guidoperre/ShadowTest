@@ -40,7 +40,8 @@ class SectionLayout : ConstraintLayout {
     }
 
     private fun initBackground() {
-        background = generateBackgroundWithShadow(this)
+        val drawable = ContextCompat.getDrawable(context, R.drawable.shadow)
+        background = drawable
     }
 
     private fun setBackgroundColor() {
