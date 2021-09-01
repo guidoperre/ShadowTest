@@ -58,7 +58,7 @@ class SectionLayout : ConstraintLayout {
     }
 
     override fun draw(canvas: Canvas?) {
-        canvas?.translate(0f, topPad)
+        canvas?.translate(0f, resources.getDimension(R.dimen.wallet_api_section_layout_offset_top))
         super.draw(canvas)
     }
 
@@ -69,10 +69,12 @@ class SectionLayout : ConstraintLayout {
     }
 
     private fun setBackgroundScale(w: Int, h: Int) {
-        val heightRatio = (botPad + topPad) / h
-        val widthRatio = (horPad * 2 + w) / w
-        scaleY = heightRatio
+        val heightGap = resources.getDimension(R.dimen.wallet_api_section_layout_offset_bottom) + resources.getDimension(R.dimen.wallet_api_section_layout_offset_top) + h
+        val widthGap = (resources.getDimension(R.dimen.wallet_api_section_layout_offset_left_right) * 2) + w
+        val widthRatio = widthGap / w
+        val heightRatio = heightGap / h
         scaleX = widthRatio
+        scaleY = heightRatio
     }
 
     private fun setViewGroupBounds(w: Int, h: Int) {
