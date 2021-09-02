@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="section_radius_corner">4dp</dimen>
-    <dimen name="section_elevation">4dp</dimen>
-
     <dimen name="wallet_api_section_layout_corner_radius">4dp</dimen>
 
     <dimen name="wallet_api_section_layout_offset_left_right">11.6dp</dimen>
     <dimen name="wallet_api_section_layout_offset_top">5.2dp</dimen>
     <dimen name="wallet_api_section_layout_offset_bottom">19dp</dimen>
+
     <dimen name="wallet_api_section_layout_offset_left_right_gap">11dp</dimen>
     <dimen name="wallet_api_section_layout_offset_top_gap">6.2dp</dimen>
     <dimen name="wallet_api_section_layout_offset_bottom_gap">16dp</dimen>
+
+    <dimen name="wallet_api_section_layout_padding_vertical">12dp</dimen>
+    <dimen name="wallet_api_section_layout_padding_horizontal">16dp</dimen>
 </resources>
