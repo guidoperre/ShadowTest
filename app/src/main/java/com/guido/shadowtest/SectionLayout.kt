@@ -85,20 +85,20 @@ class SectionLayout : ConstraintLayout {
     }
 
     private fun setChildScale(view: View) {
-//        view.scaleX = 1.5f
-//        view.scaleY = 1.5f
-//        if (view !is ViewGroup) {
-//            view.scaleX = 1 / horizontalScaleRatio
-//            view.scaleY = 1 / verticalScaleRatio
-//        } else {
-//            setChildViews(view)
-//        }
+        if (view !is ViewGroup) {
+            view.scaleX = 1 / horizontalScaleRatio
+            view.scaleY = 1 / verticalScaleRatio
+        } else {
+            setChildViews(view)
+        }
     }
 
     private fun setBounds(w: Int, h: Int) {
         path.reset()
-        layoutRect.right = w.toFloat() + 300
-        layoutRect.bottom = h.toFloat() + 200
+        layoutRect.top = topGap
+        layoutRect.left = horGap
+        layoutRect.right = w - horGap
+        layoutRect.bottom = h - botGap
         path.addRoundRect(layoutRect, cornerRadius, cornerRadius, Path.Direction.CW)
         path.close()
     }
@@ -130,7 +130,7 @@ class SectionLayout : ConstraintLayout {
 
     override fun dispatchDraw(canvas: Canvas) {
         val save = canvas.save()
-        //canvas.clipPath(path)
+        canvas.clipPath(path)
         super.dispatchDraw(canvas)
         canvas.restoreToCount(save)
     }
