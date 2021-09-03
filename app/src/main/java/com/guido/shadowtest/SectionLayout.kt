@@ -47,16 +47,13 @@ class SectionLayout : ConstraintLayout {
         }
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val shadow = getShadow()
-        val clip = findCorrectParent()
-        clip?.let {
-            shadow?.let {
-                val params = it.layoutParams
-                params.height = clip.height
-                it.layoutParams = params
-            }
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        getShadow()?.let {
+            val params = it.layoutParams
+            params.width = w
+            params.height = h
+            it.layoutParams = params
         }
     }
 

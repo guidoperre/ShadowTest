@@ -4,9 +4,10 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.widget.FrameLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
-class ShadowLayout : FrameLayout {
+class ShadowLayout : ConstraintLayout {
 
     companion object {
         private const val TWO = 2
