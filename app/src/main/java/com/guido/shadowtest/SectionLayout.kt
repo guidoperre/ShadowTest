@@ -34,6 +34,40 @@ class SectionLayout : ConstraintLayout {
         super.onLayout(changed, left, top, right, bottom)
         setMargin()
         clipParent()
+        setContentSize()
+    }
+
+    private fun setContentSize() {
+        val view = findCorrectParent()
+        view?.let {
+            val params = view.layoutParams
+            params.width = layoutParams.width
+            params.height = layoutParams.height
+            view.layoutParams = params
+        }
+    }
+
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        val shadow = getShadow()
+        val clip = findCorrectParent()
+        clip?.let {
+            shadow?.let {
+                val params = it.layoutParams
+                params.height = clip.height
+                it.layoutParams = params
+            }
+        }
+    }
+
+    private fun getShadow(): ShadowLayout? {
+        for (i in 0 until childCount) {
+            val view = getChildAt(i)
+            if (view is ShadowLayout) {
+                return view
+            }
+        }
+        return null
     }
 
     private fun addShadow() {
@@ -49,7 +83,7 @@ class SectionLayout : ConstraintLayout {
         val clipLayout = ClipLayout(context)
         clipLayout.layoutParams = LayoutParams(
             LayoutParams.MATCH_PARENT,
-            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT,
         )
         addView(clipLayout)
     }

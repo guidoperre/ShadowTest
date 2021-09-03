@@ -3,10 +3,10 @@ package com.guido.shadowtest
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.view.View
+import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 
-class ShadowLayout : View {
+class ShadowLayout : FrameLayout {
 
     companion object {
         private const val TWO = 2
