@@ -1,97 +1,125 @@
 package com.guido.shadowtest
 
 import android.content.Context
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import android.graphics.drawable.LayerDrawable
-import android.graphics.drawable.ShapeDrawable
-import android.graphics.drawable.shapes.RoundRectShape
 import android.util.AttributeSet
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 
+class SectionLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-class SectionLayout : ConstraintLayout {
+    private val verticalPadding = resources.getDimension(
+        R.dimen.wallet_api_section_layout_padding_vertical
+    ).toInt()
+    private val horizontalPadding = resources.getDimension(
+        R.dimen.wallet_api_section_layout_padding_horizontal
+    ).toInt()
 
-    companion object {
-        private const val backgroundColor = R.color.white
-        private const val cornerRadius = R.dimen.section_radius_corner
-        private const val shadowColor =  R.color.shadowColor
-        private const val sectionElevation = R.dimen.section_elevation
+    init {
+        addShadow()
+        addClip()
     }
 
-    constructor(context: Context): super(context) {
-        initBackground()
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
+        super.onLayout(changed, left, top, right, bottom)
+        setMargin()
+        clipParent()
     }
 
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs) {
-        initBackground()
+    private fun addShadow() {
+        val shadowLayout = inflate(context, R.layout.shadow_layout, this)
+        addView(shadowLayout)
     }
 
-    constructor(
-        context: Context,
-        attrs: AttributeSet,
-        defStyleAttr: Int
-    ): super(context, attrs, defStyleAttr) {
-        initBackground()
-    }
-
-    private fun initBackground() {
-        background = generateBackgroundWithShadow(this)
-    }
-
-    private fun setBackgroundColor() {
-
-    }
-
-    private fun setRoundCorner() {
-
-    }
-
-    private fun setShadowColor() {
-
-    }
-
-    private fun setElevation() {
-
-    }
-
-    private fun generateBackgroundWithShadow(view: View): Drawable {
-        val cornerRadiusValue: Float = view.context.resources.getDimension(cornerRadius)
-        val elevationValue = view.context.resources.getDimension(sectionElevation).toInt()
-        val shadowColorValue = ContextCompat.getColor(view.context, shadowColor)
-        val backgroundColorValue = ContextCompat.getColor(view.context, backgroundColor)
-        val backgroundPaint = Paint()
-        val dy = elevationValue / 3
-        val shapeDrawable = ShapeDrawable()
-        val shapeDrawablePadding = Rect()
-        val outerRadius = floatArrayOf(
-            cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue,
-            cornerRadiusValue, cornerRadiusValue, cornerRadiusValue, cornerRadiusValue
+    private fun addClip() {
+        val clipLayout = LayoutInflater.from(context).inflate(
+            R.layout.clip_layout, this, false
         )
-
-        shapeDrawablePadding.top = elevationValue
-        shapeDrawablePadding.bottom = elevationValue
-        backgroundPaint.style = Paint.Style.FILL
-        backgroundPaint.setShadowLayer(cornerRadiusValue, 0f, 0f, 0)
-        shapeDrawable.setPadding(shapeDrawablePadding)
-        shapeDrawable.paint.color = backgroundColorValue
-        shapeDrawable.paint.setShadowLayer(10f, 0f, dy.toFloat(), shadowColorValue)
-        view.setLayerType(LAYER_TYPE_SOFTWARE, shapeDrawable.paint)
-        shapeDrawable.shape = RoundRectShape(outerRadius, null, null)
-
-        val drawable = LayerDrawable(arrayOf<Drawable>(shapeDrawable))
-        drawable.setLayerInset(
-            0,
-            elevationValue,
-            elevationValue * 2,
-            elevationValue,
-            elevationValue * 2
-        )
-        return drawable
+        addView(clipLayout)
     }
 
+    private fun clipParent() {
+        val parent = parent as ViewGroup?
+        parent?.clipChildren = false
+    }
+
+    private fun setMargin() {
+        val params = layoutParams as MarginLayoutParams
+        params.setMargins(
+            horizontalPadding,
+            verticalPadding,
+            horizontalPadding,
+            verticalPadding
+        )
+        layoutParams = params
+    }
+
+    private fun recognizeChildren(view: View): Boolean {
+        return view is ClipLayout || view is ShadowLayout
+    }
+
+    private fun getClipView(): ClipLayout? {
+        for (i in 0 until childCount) {
+            val view = getChildAt(i)
+            if (view is ClipLayout) {
+                return view
+            }
+        }
+        return null
+    }
+
+    override fun addView(child: View?) {
+        child?.let {
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it)
+            } else {
+                super.addView(it)
+            }
+        }
+    }
+
+    override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
+        child?.let {
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, params)
+            } else {
+                super.addView(it, params)
+            }
+        }
+    }
+
+    override fun addView(child: View?, index: Int) {
+        child?.let {
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, index)
+            } else {
+                super.addView(it, index)
+            }
+        }
+    }
+
+    override fun addView(child: View?, width: Int, height: Int) {
+        child?.let {
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, width, height)
+            } else {
+                super.addView(it, width, height)
+            }
+        }
+    }
+
+    override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
+        child?.let {
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, index, params)
+            } else {
+                super.addView(it, index, params)
+            }
+        }
+    }
 }
