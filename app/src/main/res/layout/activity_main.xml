@@ -19,7 +19,10 @@
         <View
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:background="#eee" />
+            android:background="#eee"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </com.guido.shadowtest.SectionLayout>
 

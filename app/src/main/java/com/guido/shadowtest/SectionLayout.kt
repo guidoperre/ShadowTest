@@ -29,12 +29,6 @@ class SectionLayout @JvmOverloads constructor(
         super.onLayout(changed, left, top, right, bottom)
         setMargin()
         clipParent()
-        getClipView()?.let {
-            val params = it.layoutParams
-            params.width = width
-            params.height = height
-            it.layoutParams = params
-        }
     }
 
     private fun addShadow() {
