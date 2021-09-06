@@ -2,6 +2,7 @@ package com.guido.shadowtest
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -20,8 +21,8 @@ class SectionLayout @JvmOverloads constructor(
     ).toInt()
 
     init {
-        //addShadow()
-        //addClip()
+        addShadow()
+        addClip()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
@@ -42,7 +43,9 @@ class SectionLayout @JvmOverloads constructor(
     }
 
     private fun addClip() {
-        val clipLayout = inflate(context, R.layout.clip_layout, null)
+        val clipLayout = LayoutInflater.from(context).inflate(
+            R.layout.clip_layout, this, false
+        )
         addView(clipLayout)
     }
 

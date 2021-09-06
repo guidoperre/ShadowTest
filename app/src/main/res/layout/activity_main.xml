@@ -9,26 +9,12 @@
 
     <com.guido.shadowtest.SectionLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_margin="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
-        <com.guido.shadowtest.ShadowLayout
-            android:id="@+id/shadow_layout"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="@+id/clip_layout"
-            app:layout_constraintLeft_toLeftOf="@+id/clip_layout"
-            app:layout_constraintRight_toRightOf="@+id/clip_layout"
-            app:layout_constraintTop_toTopOf="@+id/clip_layout" />
-
-        <com.guido.shadowtest.ClipLayout
-            android:id="@+id/clip_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
         <View
             android:layout_width="300dp"
