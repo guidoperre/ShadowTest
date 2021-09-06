@@ -7,7 +7,11 @@ import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 
-class ClipLayout : ConstraintLayout {
+class ClipLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr)  {
 
     private val layoutRect = RectF()
     private val path = Path()
@@ -15,16 +19,6 @@ class ClipLayout : ConstraintLayout {
     private val cornerRadius = resources.getDimension(
         R.dimen.wallet_api_section_layout_corner_radius
     )
-
-    constructor(context: Context): super(context)
-
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet,
-        defStyleAttr: Int
-    ): super(context, attrs, defStyleAttr)
 
     private fun setBounds(w: Int, h: Int) {
         path.reset()

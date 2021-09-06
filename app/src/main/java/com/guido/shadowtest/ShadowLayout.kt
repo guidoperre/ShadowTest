@@ -3,11 +3,12 @@ package com.guido.shadowtest
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import android.view.View
 import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
-class ShadowLayout : ConstraintLayout {
+class ShadowLayout : View {
 
     companion object {
         private const val TWO = 2
@@ -39,8 +40,10 @@ class ShadowLayout : ConstraintLayout {
     }
 
     private fun setBackgroundScale(w: Int, h: Int) {
-        scaleX = ((horPad * TWO) + w) / w
-        scaleY = (botPad + topPad + h) / h
+        if (w != 0 && h != 0) {
+            scaleX = ((horPad * TWO) + w) / w
+            scaleY = (botPad + topPad + h) / h
+        }
     }
 
     override fun draw(canvas: Canvas?) {

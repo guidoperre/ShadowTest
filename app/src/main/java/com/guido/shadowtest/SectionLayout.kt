@@ -6,7 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 
-class SectionLayout : ConstraintLayout {
+class SectionLayout @JvmOverloads constructor(
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+) : ConstraintLayout(context, attrs, defStyleAttr) {
 
     private val verticalPadding = resources.getDimension(
         R.dimen.wallet_api_section_layout_padding_vertical
@@ -15,73 +19,30 @@ class SectionLayout : ConstraintLayout {
         R.dimen.wallet_api_section_layout_padding_horizontal
     ).toInt()
 
-    constructor(context: Context): super(context)
-
-    constructor(context: Context, attrs: AttributeSet): super(context, attrs)
-
-    constructor(
-        context: Context,
-        attrs: AttributeSet,
-        defStyleAttr: Int
-    ): super(context, attrs, defStyleAttr)
-
     init {
-        addShadow()
-        addClip()
+        //addShadow()
+        //addClip()
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
         setMargin()
         clipParent()
-        setContentSize()
-    }
-
-    private fun setContentSize() {
-        val view = findCorrectParent()
-        view?.let {
-            val params = view.layoutParams
-            params.width = layoutParams.width
-            params.height = layoutParams.height
-            view.layoutParams = params
-        }
-    }
-
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-        getShadow()?.let {
+        getClipView()?.let {
             val params = it.layoutParams
-            params.width = w
-            params.height = h
+            params.width = width
+            params.height = height
             it.layoutParams = params
         }
     }
 
-    private fun getShadow(): ShadowLayout? {
-        for (i in 0 until childCount) {
-            val view = getChildAt(i)
-            if (view is ShadowLayout) {
-                return view
-            }
-        }
-        return null
-    }
-
     private fun addShadow() {
-        val shadowLayout = ShadowLayout(context)
-        shadowLayout.layoutParams = LayoutParams(
-            LayoutParams.MATCH_PARENT,
-            LayoutParams.MATCH_PARENT,
-        )
+        val shadowLayout = inflate(context, R.layout.shadow_layout, this)
         addView(shadowLayout)
     }
 
     private fun addClip() {
-        val clipLayout = ClipLayout(context)
-        clipLayout.layoutParams = LayoutParams(
-            LayoutParams.MATCH_PARENT,
-            LayoutParams.WRAP_CONTENT,
-        )
+        val clipLayout = inflate(context, R.layout.clip_layout, null)
         addView(clipLayout)
     }
 
@@ -101,13 +62,11 @@ class SectionLayout : ConstraintLayout {
         layoutParams = params
     }
 
-    // A sad story :(
     private fun recognizeChildren(view: View): Boolean {
         return view is ClipLayout || view is ShadowLayout
     }
 
-    // Another sad story :(
-    private fun findCorrectParent(): ViewGroup? {
+    private fun getClipView(): ClipLayout? {
         for (i in 0 until childCount) {
             val view = getChildAt(i)
             if (view is ClipLayout) {
@@ -119,55 +78,50 @@ class SectionLayout : ConstraintLayout {
 
     override fun addView(child: View?) {
         child?.let {
-            if (!recognizeChildren(child)) {
-                val parent = findCorrectParent()
-                parent?.addView(child)
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it)
             } else {
-                super.addView(child)
+                super.addView(it)
             }
         }
     }
 
     override fun addView(child: View?, params: ViewGroup.LayoutParams?) {
         child?.let {
-            if (!recognizeChildren(child)) {
-                val parent = findCorrectParent()
-                parent?.addView(child, params)
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, params)
             } else {
-                super.addView(child, params)
+                super.addView(it, params)
             }
         }
     }
 
     override fun addView(child: View?, index: Int) {
         child?.let {
-            if (!recognizeChildren(child)) {
-                val parent = findCorrectParent()
-                parent?.addView(child, index)
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, index)
             } else {
-                super.addView(child, index)
+                super.addView(it, index)
             }
         }
     }
 
     override fun addView(child: View?, width: Int, height: Int) {
         child?.let {
-            if (!recognizeChildren(child)) {
-                val parent = findCorrectParent()
-                parent?.addView(child, width, height)
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, width, height)
             } else {
-                super.addView(child, width, height)
+                super.addView(it, width, height)
             }
         }
     }
 
     override fun addView(child: View?, index: Int, params: ViewGroup.LayoutParams?) {
         child?.let {
-            if (!recognizeChildren(child)) {
-                val parent = findCorrectParent()
-                parent?.addView(child, index, params)
+            if (!recognizeChildren(it)) {
+                getClipView()?.addView(it, index, params)
             } else {
-                super.addView(child, index, params)
+                super.addView(it, index, params)
             }
         }
     }
