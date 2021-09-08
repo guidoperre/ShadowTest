@@ -13,17 +13,13 @@ class ShadowLayout : View {
     companion object {
         private const val TWO = 2
         private const val ZERO_FLOAT = 0f
+        private const val RELATION_NUMBER = 788f
     }
 
     private val horPad = resources.getDimension(
         R.dimen.wallet_api_section_layout_offset_left_right
     )
-    private val topPad = resources.getDimension(
-        R.dimen.wallet_api_section_layout_offset_top
-    )
-    private val botPad = resources.getDimension(
-        R.dimen.wallet_api_section_layout_offset_bottom
-    )
+    private val constant = horPad * TWO
 
     constructor(context: Context): super(context)
 
@@ -41,13 +37,21 @@ class ShadowLayout : View {
 
     private fun setBackgroundScale(w: Int, h: Int) {
         if (w != 0 && h != 0) {
-            scaleX = ((horPad * TWO) + w) / w
-            scaleY = (botPad + topPad + h) / h
+            scaleX = (getRelationshipRatio(w) + w) / w
+            scaleY = (getRelationshipRatio(h) + h) / h
+        }
+    }
+
+    private fun getRelationshipRatio(n: Int): Float {
+        return if (n < RELATION_NUMBER) {
+            constant * ((1 / (n / RELATION_NUMBER)) / 2.5f)
+        } else {
+            constant
         }
     }
 
     override fun draw(canvas: Canvas?) {
-        canvas?.translate(ZERO_FLOAT, topPad)
+        canvas?.translate(0.5f, ((horPad / 2) - 1))
         super.draw(canvas)
     }
 
