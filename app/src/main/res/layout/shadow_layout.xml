@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.guido.shadowtest.ShadowLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shadow_layout"
+    android:layout_width="0dp"
+    android:layout_height="0dp"
+    app:layout_constraintBottom_toBottomOf="@+id/clip_layout"
+    app:layout_constraintLeft_toLeftOf="@+id/clip_layout"
+    app:layout_constraintRight_toRightOf="@+id/clip_layout"
+    app:layout_constraintTop_toTopOf="@+id/clip_layout"/>
