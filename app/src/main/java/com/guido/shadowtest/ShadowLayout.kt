@@ -5,8 +5,6 @@ import android.graphics.Canvas
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.View
-import android.widget.FrameLayout
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 
 class ShadowLayout : View {

@@ -13,13 +13,6 @@ class SectionLayout @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : ConstraintLayout(context, attrs, defStyleAttr) {
 
-    private val verticalPadding = resources.getDimension(
-        R.dimen.wallet_api_section_layout_padding_vertical
-    ).toInt()
-    private val horizontalPadding = resources.getDimension(
-        R.dimen.wallet_api_section_layout_padding_horizontal
-    ).toInt()
-
     init {
         addShadow()
         addClip()
@@ -27,7 +20,6 @@ class SectionLayout @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
-        setMargin()
         clipParent()
     }
 
@@ -46,17 +38,6 @@ class SectionLayout @JvmOverloads constructor(
     private fun clipParent() {
         val parent = parent as ViewGroup?
         parent?.clipChildren = false
-    }
-
-    private fun setMargin() {
-        val params = layoutParams as MarginLayoutParams
-        params.setMargins(
-            horizontalPadding,
-            verticalPadding,
-            horizontalPadding,
-            verticalPadding
-        )
-        layoutParams = params
     }
 
     private fun recognizeChildren(view: View): Boolean {
