@@ -1,6 +1,11 @@
 package com.guido.shadowtest
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.BlendMode
+import android.graphics.PorterDuff
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
@@ -52,6 +57,74 @@ class SectionLayout @JvmOverloads constructor(
             }
         }
         return null
+    }
+
+    override fun setElevation(elevation: Float) {
+        // no-op
+    }
+
+    override fun setNestedScrollingEnabled(enabled: Boolean) {
+        getClipView()?.isNestedScrollingEnabled = enabled
+    }
+
+    override fun setMaxHeight(value: Int) {
+        getClipView()?.maxHeight = value
+    }
+
+    override fun setMinHeight(value: Int) {
+        getClipView()?.minHeight = value
+    }
+
+    override fun setMaxWidth(value: Int) {
+        getClipView()?.maxWidth = value
+    }
+
+    override fun setMinWidth(value: Int) {
+        getClipView()?.minWidth = value
+    }
+
+    override fun setClipChildren(clipChildren: Boolean) {
+        getClipView()?.clipChildren = clipChildren
+    }
+
+    override fun setClipToPadding(clipToPadding: Boolean) {
+        getClipView()?.clipToPadding = clipToPadding
+    }
+
+    override fun setClipBounds(clipBounds: Rect?) {
+        getClipView()?.clipBounds = clipBounds
+    }
+
+    override fun setClipToOutline(clipToOutline: Boolean) {
+        getClipView()?.clipToOutline = clipToOutline
+    }
+
+    override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
+        getClipView()?.setPadding(left, top, right, bottom)
+    }
+
+    override fun setBackground(background: Drawable?) {
+        getClipView()?.background = background
+    }
+
+    override fun setBackgroundColor(color: Int) {
+        getClipView()?.setBackgroundColor(color)
+    }
+
+    override fun setBackgroundResource(resid: Int) {
+        getClipView()?.setBackgroundResource(resid)
+    }
+
+    override fun setBackgroundTintBlendMode(blendMode: BlendMode?) {
+        getClipView()?.backgroundTintBlendMode = blendMode
+    }
+
+    override fun setBackgroundTintList(tint: ColorStateList?) {
+        getClipView()?.backgroundTintList = tint
+    }
+
+    override fun setBackgroundTintMode(tintMode: PorterDuff.Mode?) {
+        getClipView()?.backgroundTintMode = tintMode
     }
 
     override fun addView(child: View?) {
