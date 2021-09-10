@@ -8,12 +8,17 @@
     android:background="#ccc"
     tools:context=".MainActivity">
 
-    <com.guido.shadowtest.SectionLayout
+    <com.guido.shadowtest.Section
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_margin="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:sectionRipple="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.guido.shadowtest.Section>
 
     <androidx.constraintlayout.widget.Guideline
         android:layout_width="wrap_content"
