@@ -1,0 +1,13 @@
+Box size = 450 x 450
+
+Padding Lines = 5%
+
+Background fill Color = Enabled
+Fill Color = #ffffff
+Outline Color = #ffffff
+Outline Width = 2
+
+Round = 6
+Shadow blur = 16
+Shadow color = rgba(0,0,0,0.1)
+Shadow offset Y = 6
